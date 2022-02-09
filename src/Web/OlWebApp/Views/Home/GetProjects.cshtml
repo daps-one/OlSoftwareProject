@@ -1,0 +1,38 @@
+@model IEnumerable<Project>
+@{
+    ViewData["Title"] = "Proyectos";
+}
+<h1 class="text-center">@ViewData["Title"]</h1>
+<hr>
+<a href="@Url.Action("CreateProject", values: new { clientId = ViewBag.clientId })" class="btn btn-outline-success mb-3">Nuevo proyecto</a>
+@if (Model != null && Model.Count() > 0)
+{
+    <div class="list-group mt-3">
+        @foreach (Project project in Model)
+        {
+            <div class="list-group-item">
+                <div class="d-flex w-100 justify-content-between">
+                    <h5 class="mb-1">@project.Name</h5>
+                    <small>@project.StartDate.ToShortDateString() - @project.EndDate.ToShortDateString()</small>
+                </div>
+                <p class="mb-1">Precio: @project.Price</p>
+                <p class="mb-1">Horas totales: @project.TotalHours</p>
+                <small>
+                    <a href="@Url.Action(action: "EditProject", values: new { clientId = ViewBag.clientId, projectId = project.ProjectId })" class="btn btn-outline-warning">Editar</a>
+                    <a href="" class="btn btn-outline-danger" data-delete-project data-id="@project.ProjectId" data-client-id="@ViewBag.clientId">Eliminar</a>
+                </small>
+            </div>
+        }
+    </div>
+}
+else
+{
+    <h1 class="text-center">
+        No se encontraron resultados
+    </h1>
+}
+
+@section Scripts
+{
+    <script src="~/js/render.js" asp-append-version="true"></script>
+}

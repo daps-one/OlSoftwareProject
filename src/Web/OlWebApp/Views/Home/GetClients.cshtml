@@ -1,0 +1,52 @@
+﻿@model IEnumerable<Client>
+@{
+    ViewData["Title"] = "Clientes";
+}
+
+<h1 class="text-center">@ViewData["Title"]</h1>
+<hr>
+<a href="@Url.Action("CreateClient")" class="btn btn-outline-success mb-3">Nuevo cliente</a>
+@if (Model != null && Model.Count() > 0)
+{
+    <div class="row">
+        @foreach (Client client in Model)
+        {
+            <div class="col-sm-6 col-md-3 mb-3">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">@client.Name</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">Id: @client.Identification</h6>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">Dirección: @client.Address</li>
+                            <li class="list-group-item">Teléfono: @client.Phone</li>
+                            <li class="list-group-item">
+                                <div class="btn-group" role="group">
+                                    <a href="@Url.Action("GetProjects", values: new { clientId = client.ClientId })"
+                                class="btn btn-outline-secondary">Proyectos</a>
+                                    <a href="@Url.Action("GenerateReport", values: new { clientId = client.ClientId })"
+                                class="btn btn-outline-secondary" download="report-client-@(client.ClientId)-fecha-@(DateTime.Now.ToShortDateString()).json">Reporte</a>
+                                </div>
+                            </li>
+                        </ul>
+                        <a class="btn btn-outline-warning"
+                    href="@Url.Action(action: "EditClient", values: new { clientId = client.ClientId })"
+                    class="card-link">Editar</a>
+                        <a class="btn btn-outline-danger" href="" class="card-link" data-delete-client
+                    data-id="@client.ClientId">Eliminar</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
+else
+{
+    <h1 class="text-center">
+        No se encontraron resultados
+    </h1>
+}
+
+@section Scripts
+{
+<script src="~/js/render.js" asp-append-version="true"></script>
+}

@@ -1,0 +1,85 @@
+@model Project
+@{
+    ViewData["Title"] = Model == null ? "Crear proyecto" : "Modificar proyecto";
+    var listColors = new List<string> { "primary", "secondary", "success", "danger", "warning", "info", "dark" };
+    var listStatus = ViewBag.listStatus == null ? new List<SelectListItem>() : ((IEnumerable<Status>)ViewBag.listStatus).Select(x =>
+    new SelectListItem
+    {
+        Text = x.Description,
+        Value = x.StatusId.ToString()
+    });
+}
+<h1 class="text-center">@ViewData["Title"]</h1>
+
+<form novalidate id="formProject">
+    <input type="hidden" asp-for="ProjectId" />
+    <input type="hidden" asp-for="ClientId" />
+    <div class="row">
+        <div class="mb-3">
+            <label asp-for="Name" class="form-label">Nombre</label>
+            <input type="text" class="form-control" asp-for="Name">
+            <span asp-validation-for="Name"></span>
+        </div>
+        <div class="col-12 mb-3">
+            <label asp-for="Price" class="form-label">Precio</label>
+            <input type="number" class="form-control" asp-for="Price">
+            <span asp-validation-for="Price"></span>
+        </div>
+        <div class="col-12 mb-3">
+            <label asp-for="TotalHours" class="form-label">Horas totales</label>
+            <input type="number" class="form-control" asp-for="TotalHours">
+            <span asp-validation-for="TotalHours"></span>
+        </div>
+        <div class="col-12 mb-3 row">
+            <div class="col-md-6">
+                <label asp-for="StartDate" class="form-label">Fecha inicial</label>
+                <input type="date" class="form-control" asp-for="StartDate">
+                <span asp-validation-for="StartDate"></span>
+            </div>
+            <div class="col-md-6">
+                <label asp-for="EndDate" class="form-label">Fecha de finalización</label>
+                <input type="date" class="form-control" asp-for="EndDate">
+                <span asp-validation-for="EndDate"></span>
+            </div>
+        </div>
+        <div class="col-12 mb-3">
+            <label asp-for="StatusId" class="form-label">Estado</label>
+            <select asp-for="StatusId" asp-items="listStatus" class="form-select"></select>
+            <span asp-validation-for="StatusId"></span>
+        </div>
+        <div class="card mb-3">
+            <div class="card-body">
+                <h4 class="text-center">Lenguajes</h4>
+                <button type="button" class="btn btn-outline-primary mb-3" data-bs-toggle="modal"
+                    data-bs-target="#modalAddLanguage">Agregar</button>
+                <div class="row" id="targetLanguages">
+                    @if (Model != null && Model.Languages != null && Model.Languages.Count() > 0)
+                    {
+                        foreach (Language language in Model.Languages)
+                        {
+                            <div class="col-3">
+                                <div class="alert alert-@(listColors[new Random().Next(0, 6)]) alert-dismissible fade show rounded p-1 pe-4" role="alert">
+                                    <h6 class="alert-heading text-center description">@language.Description</h6>
+                                    <p class="mb-0 text-center">Nivel: @language.Level.Description</p>
+                                    <span class="d-none levelId">@language.LevelId</span>
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>
+                            </div>
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+        <div class="mb-3 justify-content-center align-items-center d-flex">
+            <button type="submit" class="btn btn-outline-success w-50">Guardar</button>
+        </div>
+
+    </div>
+</form>
+@Html.Partial("_FormLanguage", (Language)null)
+@section Scripts
+{
+<script src="~/lib/jquery-validation/dist/jquery.validate.min.js" asp-append-version="true"></script>
+<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js" asp-append-version="true"></script>
+<script src="~/js/render.js" asp-append-version="true"></script>
+}

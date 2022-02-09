@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
@@ -13,8 +14,10 @@ public class Project
     [Required]
     public int ProjectId { get; set; }
 
-    [Required]
-    [StringLength(128)]
+
+    [DisplayName("Nombre del proyecto")]
+    [Required(ErrorMessage = "El campo {0} es obligatorio.")]
+    [StringLength(128, ErrorMessage = "El campo {0} debe ser una cadena con una longitud máxima de {1}.")]
     public string Name { get; set; }
 
     [Required]
@@ -25,21 +28,26 @@ public class Project
     [JsonIgnore]
     public virtual Client Client { get; set; }
 
-    [Required]
+    [DisplayName("Fecha inicial")]
+    [Required(ErrorMessage = "El campo {0} es obligatorio.")]
     [DataType(DataType.Date)]
     public DateTime StartDate { get; set; }
 
-    [Required]
+    [DisplayName("Fecha final")]
+    [Required(ErrorMessage = "El campo {0} es obligatorio.")]
     [DataType(DataType.Date)]
     public DateTime EndDate { get; set; }
 
-    [Required]
+    [DisplayName("Precio")]
+    [Required(ErrorMessage = "El campo {0} es obligatorio.")]
     public int Price { get; set; }
 
-    [Required]
+    [DisplayName("Horas totales")]
+    [Required(ErrorMessage = "El campo {0} es obligatorio.")]
     public int TotalHours { get; set; }
 
-    [Required]
+    [DisplayName("Estado")]
+    [Required(ErrorMessage = "El campo {0} es obligatorio.")]
     [ForeignKey("Status")]
     public int StatusId { get; set; }
 

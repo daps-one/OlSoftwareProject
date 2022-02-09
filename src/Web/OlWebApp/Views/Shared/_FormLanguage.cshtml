@@ -1,0 +1,40 @@
+@model Language
+@{
+    var listLevels = ViewBag.listLevels == null ? new List<SelectListItem>() : ((IEnumerable<Level>)ViewBag.listLevels).Select(x =>
+    new SelectListItem
+    {
+        Text = x.Description,
+        Value = x.LevelId.ToString()
+    });
+}
+
+<form novalidate id="formLanguage">
+    <div class="modal fade" id="modalAddLanguage" tabindex="-1" aria-labelledby="modalAddLanguage" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Agregar lenguaje</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label asp-for="Description" class="form-label">Lenguaje</label>
+                        <input type="text" class="form-control" asp-for="Description">
+                        <span asp-validation-for="Description"></span>
+                    </div>
+                    @if (listLevels != null)
+                    {
+                        <div class="mb-3">
+                            <label asp-for="LevelId" class="form-label">Nivel</label>
+                            <select asp-for="LevelId" asp-items="listLevels" class="form-select"></select>
+                            <span asp-validation-for="LevelId"></span>
+                        </div>
+                    }
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Guardar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

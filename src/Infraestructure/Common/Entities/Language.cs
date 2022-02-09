@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
@@ -11,11 +12,13 @@ public class Language
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int LanguageId { get; set; }
 
-    [Required]
-    [StringLength(255)]
+    [DisplayName("Lenguaje")]
+    [Required(ErrorMessage = "El campo {0} es obligatorio.")]
+    [StringLength(255, ErrorMessage = "El campo {0} debe ser una cadena con una longitud máxima de {1}.")]
     public string Description { get; set; }
 
-    [Required]
+    [DisplayName("Nivel")]
+    [Required(ErrorMessage = "El campo {0} es obligatorio.")]
     public int LevelId { get; set; }
 
     [JsonIgnore]
